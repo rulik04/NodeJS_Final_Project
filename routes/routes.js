@@ -4,15 +4,15 @@ const User = require('../models/user');
 const Quiz = require('../models/quiz');
 const Item = require('../models/item');
 const bcrypt = require('bcrypt');
-const multer = require('multer'); // For handling file uploads
+const multer = require('multer');
 
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/uploads') // Destination folder for storing uploads
+        cb(null, 'public/uploads') 
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now()) // Unique filename for each upload
+        cb(null, file.fieldname + '-' + Date.now())
     }
 });
 
@@ -433,9 +433,8 @@ router.post('/addUser', async (req, res) => {
 router.post('/admin/add-item', upload.array('pictures', 3), async (req, res) => {
     try {
         const { nameEnglish, nameSpanish, descriptionEnglish, descriptionRussian } = req.body;
-        const pictures = req.files.map(file => file.path); // Get file paths of uploaded pictures
+        const pictures = req.files.map(file => file.path);
 
-        // Create a new item object
         const newItem = new Item({
             pictures: pictures,
             names: {
@@ -492,10 +491,6 @@ router.post('/editItem', upload.array('newItemImages', 3), async (req, res) => {
     }
 });
 
-router.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).render('error', { errorMessage: 'Internal Server Error' });
-});
 
 
 module.exports = router;

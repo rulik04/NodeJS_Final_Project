@@ -1,4 +1,3 @@
-/* Form container */
 #itemForm {
     max-width: 600px;
     margin: 0 auto;
@@ -8,7 +7,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Form input fields */
 #itemForm input[type="text"],
 #itemForm textarea {
     width: 100%;
@@ -19,7 +17,6 @@
     box-sizing: border-box;
 }
 
-/* Submit and Cancel buttons */
 #itemForm button {
     padding: 10px 20px;
     margin-right: 10px;
@@ -35,12 +32,10 @@
     background-color: #0056b3;
 }
 
-/* File input for pictures */
 #itemForm input[type="file"] {
     margin-bottom: 15px;
 }
 
-/* Adjustments for smaller screens */
 @media screen and (max-width: 600px) {
     #itemForm {
         width: 80%;

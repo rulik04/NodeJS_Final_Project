@@ -12,6 +12,7 @@ app.use(methodOverride('_method'));
 app.use('/public/uploads', express.static('public/uploads'));
 
 
+
 const port = process.env.PORT || 3000;
 
 mongoose.connect('mongodb+srv://Rulan:0402@rulan.f307uzl.mongodb.net/?retryWrites=true&w=majority')
