@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Answers</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <style>
+
+        :root{
+            --background: #131214;  
+            --surface: #1D1C1F;
+            --on-surface: #DDDAE5;
+            --black-alpha-10: hsla(0, 0%, 0%, 0.1);
+        }
+
+
+        .containerQuiz {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quizCard{
+            background-color: var(--surface);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .quizCard li {
+            margin-bottom: 10px;
+        }
+
+        .answer-button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        .incorrect {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="mb-5">
+        <nav class="navbar navbar-expand-lg text-light header-bg">
+            <div class="container">
+                <img src="/img/logo3.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;" class="me-3">
+                <a class="navbar-brand text-light" href="/">CodeQuizHub</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">    
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/quizzes">Quizzes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/programming-news">News</a>
+                        </li>
+                    </ul>
+                    
+                    <% if (user == "noLogin") { %>
+                        <form action="/login" method="get" class="ms-2">
+                            <button class="btn btn-outline-primary text-white" type="submit">Login</button>
+                        </form>
+                    <% } else { %>
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-fill"></i>
+                                    <%= user.username%>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><hr class="dropdown-divider"></li>    
+                                    <li><a class="dropdown-item" href="/logout">Exit</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    <% } %>
+                </div>        
+            </div>
+        </nav>
+    </header>
+
+
+
+    <main>
+        <div class="containerQuiz">
+            <h1>Submitted Answers</h1>
+            <div>
+                <% data.forEach(question => { %>
+                    <div class="quizCard">
+                        <h2><%= question.question %></h2>
+                        <ul>
+                            <% Object.keys(question.answers).forEach(answerKey => { %>
+                                <% if (question.answers[answerKey]) { %>
+                                    <li>
+                                        <button class="answer-button <%= (selectedAnswers[question.id] === answerKey) ? (correctQuestions[question.id] ? 'selected' : 'incorrect') : '' %>" disabled>    
+                                            <%= answerKey.slice(-1) %>. <%= question.answers[answerKey] %>
+                                        </button>
+                                    </li>
+                                <% } %>
+                            <% }) %>
+                        </ul>
+    
+                        <% if (!correctQuestions[question.id] && selectedAnswers[question.id]) { %>
+                            <p>The correct answer is: <span style="color: green; font-weight: bold;"><%= question.answers[allCorrectAnswers[question.id.toString()]] %></span></p>
+                        <% } %>
+                    </div>
+                <% }) %>
+                <h2>Correct Answers</h2>
+                <p>Number of correct answers: <%= correctCount %></p>
+                <ul>
+                    <% Object.keys(correctQuestions).forEach(questionId => { %>
+                        <li><%= correctQuestions[questionId].question %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>    
+    </main>
+
+
+    <footer class="mt-5">
+        <div class="container">
+            <footer class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 py-5 border-top">
+              <div class="col mb-3 d-flex align-items-center">
+                <img src="/img/logo3.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;" class="me-3">
+                <p class="mt-3 fs-5">CodeQuizHub</p>
+              </div>
+          
+              <div class="col mb-3 ffbe3f">
+                <h5>Author</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">Alimkhan Rulan</li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Group</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">SE-2201</li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Technical Support</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">87777777777</li>
+                </ul>
+              </div>
+            </footer>
+          </div>
+    </footer>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <title>Quiz</title>
+    <style>
+
+        .containerQuiz {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quizCard{
+            background-color: var(--surface);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .quizCard li {
+            margin-bottom: 10px;
+        }
+
+        .answer-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: transparent; 
+            color: #007bff; 
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.3s;
+        }
+
+        .answer-button:hover {
+            background-color: rgb(187, 0, 255);
+        }
+
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .selected {
+            background-color: rgb(187, 0, 255);
+        }
+    </style>
+</head>
+<body>
+    <header class="mb-5">
+        <nav class="navbar navbar-expand-lg text-light header-bg">
+            <div class="container">
+                <img src="/img/logo3.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;" class="me-3">
+                <a class="navbar-brand text-light" href="/">CodeQuizHub</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">    
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/quizzes">Quizzes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/programming-news">News</a>
+                        </li>
+                    </ul>
+                    
+                    <% if (user == "noLogin") { %>
+                        <form action="/login" method="get" class="ms-2">
+                            <button class="btn btn-outline-primary text-white" type="submit">Login</button>
+                        </form>
+                    <% } else { %>
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-fill"></i>
+                                    <%= user.username%>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><hr class="dropdown-divider"></li>    
+                                    <li><a class="dropdown-item" href="/logout">Exit</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    <% } %>
+                </div>        
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        
+    <div class="containerQuiz">
+        <h1>Quiz</h1>
+
+        <div id="timer" class="d-flex justify-content-end me-5 fs-5 fw-bold">Time Remaining: &nbsp;<span id="countdown"></span></div>
+
+        <form id="quizForm" action="/submit" method="POST" onsubmit="return validateForm()">
+            <input type="hidden" name="category" value="<%= data[0].category %>">
+            <% data.forEach(question => { %>
+                <div class="quizCard">
+                    <h2><%= question.question %></h2>
+                    <ul>
+                        <% Object.keys(question.answers).forEach(answerKey => { %>
+                            <% if (question.answers[answerKey]) { %>
+                                <li>
+                                    <button class="answer-button" id="<%= answerKey %>" name="<%= question.id %>" value="<%= answerKey %>" onclick="selectAnswer(this)">
+                                        <%= answerKey.slice(-1) %> <%= question.answers[answerKey] %>
+                                    </button>
+                                </li>
+                            <% } %>
+                        <% }) %>
+                    </ul>
+                    <input type="hidden" name="selectedAnswers[<%= question.id %>]" id="selectedAnswers_<%= question.id %>" value="">
+                    <input type="hidden" name="questionsData[<%= question.id %>]" value="<%= JSON.stringify(question) %>">
+                    
+
+                </div>
+            <% }) %>
+            <div id="error-message" style="color: red; display: none; margin-bottom: 10px;">Please answer all questions before submitting.</div>
+            <input type="hidden" id="timerData" name="timerData" value="">
+
+            <button type="submit">Submit Answers</button>
+        </form>
+        
+    </div>
+    </main>
+
+
+    <footer class="mt-5">
+        <div class="container">
+            <footer class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 py-5 border-top">
+              <div class="col mb-3 d-flex align-items-center">
+                <img src="/img/logo3.jpg" alt="" style="width: 70px; height: 70px; border-radius: 5px;" class="me-3">
+                <p class="mt-3 fs-5">CodeQuizHub</p>
+              </div>
+          
+              <div class="col mb-3 ffbe3f">
+                <h5>Author</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">Alimkhan Rulan</li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Group</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">SE-2201</li>
+                </ul>
+              </div>
+          
+              <div class="col mb-3">
+                <h5>Technical Support</h5>
+                <ul class="nav flex-column">
+                  <li class="nav-item mb-2 text-light">87777777777</li>
+                </ul>
+              </div>
+            </footer>
+          </div>
+    </footer>
+
+    <script>
+        function selectAnswer(button) {
+            const questionId = button.name;
+            const allButtons = document.querySelectorAll('button[name="' + questionId + '"]');
+    
+            allButtons.forEach(btn => {
+                if (btn !== button) {
+                    btn.classList.remove('selected');
+                }
+            });
+    
+            button.classList.toggle('selected');
+    
+            const answerValue = button.value;
+            const hiddenInput = document.getElementById('selectedAnswers_' + questionId);
+    
+            if (button.classList.contains('selected')) {
+                hiddenInput.value = answerValue;
+            } else {
+                hiddenInput.value = '';
+            }
+    
+            event.preventDefault();
+        }
+
+        function validateForm() {
+            const hiddenInputs = document.querySelectorAll('input[type="hidden"]');
+            const errorMessage = document.getElementById('error-message');
+            let isAnyQuestionUnanswered = false;
+
+            for (let i = 0; i < hiddenInputs.length; i++) {
+                if (hiddenInputs[i].value === '') {
+                    isAnyQuestionUnanswered = true;
+                    break;
+                }
+            }
+
+            if (isAnyQuestionUnanswered) {
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                return true; 
+            }
+        }
+
+
+        const timeLimit = 300; 
+
+        let timeLeft = timeLimit;
+
+        updateTimerDisplay();
+
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitQuiz();
+            }
+        }, 1000);
+
+        function updateTimerDisplay() {
+            const timerElement = document.getElementById('countdown');
+            timerElement.textContent = formatTime(timeLeft);
+
+            if (timeLeft < 30) {
+                timerElement.style.color = 'red';
+            } else {
+                timerElement.style.color = 'white';
+            }
+
+            document.getElementById('timerData').value = timeLeft;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+
+        function submitQuiz() {
+            document.getElementById('quizForm').submit();
+        }
+
+    </script>
+</body>
+</html>
