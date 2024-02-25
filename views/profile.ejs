@@ -81,8 +81,16 @@
                             <hr>
                             <h3>Username: <%= user.username %></h3>
                             <h3>Email: <%= user.email %></h3>
-                            <h3>Registration Date: <%= user.createdAt %></h3>
-                            <h3>Updated At: <%= user.updatedAt %></h3>
+                            <% let date = new Date(user.createdAt); 
+                            let formattedDate = date.toDateString();
+                            let time = date.toLocaleTimeString();
+                            let updatedDate = new Date(user.updatedAt);
+                            let formattedUpdatedDate = updatedDate.toDateString();
+                            let updatedTime = updatedDate.toLocaleTimeString();
+                            %>
+
+                            <h3>Registration Date: <%= formattedDate %> <%= time %> </h3>
+                            <h3>Updated At: <%= formattedUpdatedDate %> <%= updatedTime %></h3>
                         </div>
                     </div>
                 </div>
@@ -234,15 +242,9 @@
 
     <script>
         function validatePassword() {
-            let oldPassword = document.getElementById("oldPassword").value;
 
             let password = document.getElementById("newPassword").value;
             let confirmPassword = document.getElementById("confirmPassword").value;
-            if (oldPassword !== '<%= user.password %>') {
-                document.getElementById("errorMessage").style.display = "block";
-                document.getElementById("errorMessage").innerHTML = "The old password is incorrect";
-                return false;
-            }
 
             if (password != confirmPassword) {
                 document.getElementById("errorMessage").style.display = "block";

@@ -315,15 +315,15 @@ router.get('/programming-news', async (req, res) => {
 
 
 router.get('/profile', isAuthenticated, (req, res) => {
-    res.render('profile', { user: req.session.user, message: false});
+    res.render('profile', { user: req.session.user, message: "good"});
 });
 
 
 router.put('/change-user-data', isAuthenticated, async (req, res) => {
     const { username, email } = req.body;
-    const user = await User.findByIdAndUpdate(req.session.user._id, { username, email }, { new: true });
+    const user = await User.findByIdAndUpdate(req.session.user._id, { username, email, updatedAt: new Date() }, { new: true });
     req.session.user = user;
-    res.render('profile', { user: req.session.user });
+    res.render('profile', { user: req.session.user, message: 'data changed successfully'});
 });
 
 
@@ -334,10 +334,10 @@ router.put('/change-password', isAuthenticated, async (req, res) => {
     if (!isMatch) {
         return res.render('profile', { user: req.session.user, message: 'password is incorrect'});
     }
-    newPassword = await bcrypt.hash(newPassword, 10);
-    const user = await User.findByIdAndUpdate(req.session.user._id, { password: newPassword }, { new: true });
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    const user = await User.findByIdAndUpdate(req.session.user._id, { password: hashedNewPassword, updatedAt: new Date()}, { new: true });
     req.session.user = user;
-    res.render('profile', { user: req.session.user });
+    res.render('profile', { user: req.session.user, message: 'password changed successfully'});
 });
 
 
