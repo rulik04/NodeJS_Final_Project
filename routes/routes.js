@@ -128,7 +128,7 @@ router.post('/signup', async (req, res) => {
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
-        res.render('signup', { message: "user already exists" });
+        return res.render('signup', { message: "user already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -146,16 +146,16 @@ router.post('/login', async (req, res) => {
     const user = await User.db.collection('users').findOne({ username });
 
     if (!user) {
-        res.render('login', { message: "user not found" });
+        return res.render('login', { message: "user not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-        req.session.user = user;
-    }
+
     if (!isMatch) {
-        res.render('login', { message: "password is incorrect" });
+        return res.render('login', { message: "password is incorrect" });
     }
+    req.session.user = user;
+
     if (req.session.user.role === 'admin') {
         res.redirect('/admin');
     } else {
@@ -331,7 +331,7 @@ router.put('/change-password', isAuthenticated, async (req, res) => {
     const isMatch = await bcrypt.compare(oldPassword, req.session.user.password);
 
     if (!isMatch) {
-        res.render('profile', { user: req.session.user, message: 'password is incorrect'});
+        return res.render('profile', { user: req.session.user, message: 'password is incorrect'});
     }
     newPassword = await bcrypt.hash(newPassword, 10);
     const user = await User.findByIdAndUpdate(req.session.user._id, { password: newPassword }, { new: true });
