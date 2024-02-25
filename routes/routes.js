@@ -5,6 +5,7 @@ const Quiz = require('../models/quiz');
 const Item = require('../models/item');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
+const { ObjectId } = require('mongodb');
 
 
 const storage = multer.diskStorage({
@@ -407,7 +408,7 @@ router.post('/editUser',  isAuthenticated, async (req, res) => {
 
 
 router.post('/addUser', async (req, res) => {
-    const { username, password, role } = req.body; 
+    const { username, password, role, email } = req.body; 
     // console.log(username, password, role);
     try {
         const existingUser = await User.findOne({ username });
@@ -418,7 +419,11 @@ router.post('/addUser', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User({ username, password: hashedPassword, role, createdAt: new Date().toLocaleDateString, updatedAt: new Date().toLocaleDateString});
+        const newUser = new User({ 
+            email, 
+            username, 
+            password: hashedPassword, 
+            role});
 
         await newUser.save();
 

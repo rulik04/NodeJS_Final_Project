@@ -100,11 +100,12 @@
                 </div>
                 <form action="/addUser" method="post">
                 <div class="modal-body">
-                
                         <label for="name">User name</label>
                         <input class="form-control" type="text" placeholder="User name..." name="username">
                         <label for="password">Password</label>
                         <input class="form-control" type="password" placeholder="Password..." name="password">
+                        <label for="email">Email</label>
+                        <input class="form-control" type="email" placeholder="Email..." name="email">
                         <label for="role">Role</label>
                         <select class="form-control" name="role">
                             <option value="user">User</option>
@@ -134,7 +135,8 @@
                         <input type="hidden" id="editUserId" name="userId">
                         <label for="editUsername">User name</label>
                         <input class="form-control" type="text" placeholder="User name..." id="editUsername" name="username">
-                    
+                        <label for="editEmail">Email</label>
+                        <input class="form-control" type="email" placeholder="Email..." id="editEmail" name="email">
                         <label for="editRole">Role</label>
                         <select class="form-control" id="editRole" name="role">
                             <option value="user">User</option>
@@ -240,7 +242,7 @@
                                     <td><%= user.totalTime %></td>
                                     <td>
                                         <div class="d-flex justify-content-around">
-                                            <button type="button" class="btn btn-warning editUserBtn me-3" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="<%= user._id %>" data-username="<%= user.username %>"  data-role="<%= user.role %>">Edit</button>
+                                            <button type="button" class="btn btn-warning editUserBtn me-3" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="<%= user._id %>" data-username="<%= user.username %>"  data-role="<%= user.role %>" data-email = "<%=user.email%>">Edit</button>
                                             <form action="/deleteUser/<%= user._id %>" method="post">
                                                 <button type="submit" class="btn btn-danger">Delete</button>
                                             </form>
@@ -348,7 +350,26 @@
           </div>
     </footer>
 
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let editButtons = document.querySelectorAll('.editUserBtn');
+    
+            editButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    let userId = button.getAttribute('data-user-id');
+                    let username = button.getAttribute('data-username');
+                    let role = button.getAttribute('data-role');
+                    let email = button.getAttribute('data-email');
+    
+                    document.getElementById('editUserId').value = userId;
+                    document.getElementById('editUsername').value = username;
+                    document.getElementById('editRole').value = role;
+                    document.getElementById('editEmail').value = email;
+                });
+            });
+        });
+    </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
                 let editButtons = document.querySelectorAll('.editItemBtn');
