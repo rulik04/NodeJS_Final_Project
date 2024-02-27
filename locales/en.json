@@ -1,0 +1,26 @@
+{
+    "welcome": "Welcome to CodeQuizHub",
+    "desc": "CodeQuizHub is a platform for developers to test their skills and knowledge. You can take quizzes, create quizzes, and share your results with others.",
+    "featured_quiz": "Featured Quiz",
+    "card_desc": "Test your knowledge of programming languages, frameworks, and libraries with our featured quiz.",
+    "start_quiz": "Start Quiz",
+    "recent_results": "Recent Results",
+    "no_recent_results": "No recent results available",
+    "featured_items": "Featured Items",
+    "no_featured_items": "No featured items available",
+    "user": "User",
+    "category": "Category",
+    "correct_answers": "Correct Answers",
+    "total_time": "Total Time",
+    "submitted_at": "Submitted At",
+    "author": "Author",
+    "group": "Group",
+    "technical_support": "Technical Support",
+    "quizzes": "Quizzes",
+    "news": "News",
+    "profile": "Profile",
+    "history": "History",
+    "exit": "Exit", 
+    "lang": "Language"
+}
+  

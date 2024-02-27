@@ -8,6 +8,35 @@ const multer = require('multer');
 const { ObjectId } = require('mongodb');
 
 
+router.use((req, res, next) => {
+    const userLang = req.headers["accept-language"];
+    
+    let localizationData;
+    if (userLang && userLang.startsWith("ru") || req.session.lang === "ru") {
+        localizationData = require("../locales/ru.json");
+        console.log('localizationData ru:', localizationData);
+    } if (userLang && userLang.startsWith("en") || req.session.lang === "en") {
+        localizationData = require("../locales/en.json");
+        console.log('localizationData en:', localizationData);
+    }
+    
+    res.locals.localization = localizationData;
+    
+    next();
+});
+
+router.post('/change-language', (req, res) => {
+    const lang = req.query.lang;
+
+    // You can store the language preference in session or user settings
+    req.session.lang = lang;
+    req.headers["accept-language"] = lang;
+    console.log('req.session.lang:', req.session.lang);
+    // Respond with a success message or status code
+    res.sendStatus(200);
+});
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads') 
@@ -39,12 +68,12 @@ function randomTitle(route) {
     let title = route.split("/")[2];
 
     if (title === "JavaScript") {
-        return "JavaScript Quiz";
+        return "JavaScript";
     } else if (title === "Python") {
-        return "Python Quiz";
+        return "Python";
     }
     else if (title === "sql") {
-        return "SQL Quiz";
+        return "SQL";
     }
     else if (title === "HTML") {
         return "HTML";
