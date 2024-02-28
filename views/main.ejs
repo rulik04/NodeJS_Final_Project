@@ -192,23 +192,28 @@
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="<%= items[j].pictures[0] %>" class="d-block w-100" alt="...">
-                                        <div class="carousel-caption d-none d-md-block">
-                                            <h5><%= items[j].names.english %></h5>
-                                            <p><%= items[j].descriptions.english %></p>
+                                        <div class="carousel-caption d-none d-md-block w-75">
+                                            <p><%= items[j].names.english %></p>
+                                            <p class="fs-6"><%= items[j].descriptions.english %></p>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
                                         <img src="<%= items[j].pictures[1] %>" class="d-block w-100" alt="...">
-                                        <div class="carousel-caption d-none d-md-block">
-                                            <h5><%= items[j].names.russian %></h5>
+                                        <div class="carousel-caption d-none d-md-block w-75">
+                                            <p><%= items[j].names.russian %></p>
                                             <p><%= items[j].descriptions.russian %></p>
                                         </div>
                                     </div>
                                     <div class="carousel-item">
                                         <img src="<%= items[j].pictures[2] %>" class="d-block w-100" alt="...">
-                                        <div class="carousel-caption d-none d-md-block">
-                                            <h5><%= items[j].createdAt %></h5>
-                                            <p><%= items[j].updatedAt %></p>
+                                        <div class="carousel-caption d-none d-md-block w-75">
+                                            <p>Время старта / Start time</p>
+                                            <% let date = new Date(items[j].createdAt); 
+                                            let formattedDate = date.toDateString();
+                                            let time = date.toLocaleTimeString();
+                                            %>
+
+                                            <p><%= formattedDate %> <%= time %></p>
                                         </div>
                                     </div>
                                 </div>

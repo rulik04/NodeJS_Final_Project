@@ -14,10 +14,8 @@ router.use((req, res, next) => {
     let localizationData;
     if (userLang && userLang.startsWith("ru") || req.session.lang === "ru") {
         localizationData = require("../locales/ru.json");
-        console.log('localizationData ru:', localizationData);
     } if (userLang && userLang.startsWith("en") || req.session.lang === "en") {
         localizationData = require("../locales/en.json");
-        console.log('localizationData en:', localizationData);
     }
     
     res.locals.localization = localizationData;
@@ -28,11 +26,8 @@ router.use((req, res, next) => {
 router.post('/change-language', (req, res) => {
     const lang = req.query.lang;
 
-    // You can store the language preference in session or user settings
     req.session.lang = lang;
     req.headers["accept-language"] = lang;
-    console.log('req.session.lang:', req.session.lang);
-    // Respond with a success message or status code
     res.sendStatus(200);
 });
 
