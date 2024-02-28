@@ -21,6 +21,9 @@ const itemSchema = new mongoose.Schema({
     deletedAt: {
         type: Date,
         default: null
+    },
+    date : {
+        type: Date
     }
 });
 

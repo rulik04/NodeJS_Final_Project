@@ -461,7 +461,7 @@ router.post('/addUser', async (req, res) => {
 
 router.post('/admin/add-item', upload.array('pictures', 3), async (req, res) => {
     try {
-        const { nameEnglish, nameSpanish, descriptionEnglish, descriptionRussian } = req.body;
+        const { nameEnglish, nameSpanish, descriptionEnglish, descriptionRussian, date } = req.body;
         const pictures = req.files.map(file => file.path);
 
         const newItem = new Item({
@@ -473,7 +473,8 @@ router.post('/admin/add-item', upload.array('pictures', 3), async (req, res) => 
             descriptions: {
                 english: descriptionEnglish,
                 russian: descriptionRussian
-            }
+            }, 
+            date: date
         });
 
         await newItem.save();

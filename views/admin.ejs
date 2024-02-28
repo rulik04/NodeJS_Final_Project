@@ -188,6 +188,10 @@
                         <label for="editNewItemImages" class="form-label">New Images</label>
                         <input type="file" class="form-control" id="editNewItemImages" name="newItemImages" multiple>
                     </div>
+                    <div class="mb-3">
+                        <label for="editItemDate" class="form-label mb-3">Date</label>
+                        <input type="date" class="form-control" id="editItemDate" name="itemDate">
+                    </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
@@ -272,7 +276,7 @@
             <input type="text" class="form-control" id="nameEnglish" name="nameEnglish" required>
         </div>
         <div class="mb-3">
-            <label for="nameSpanish" class="form-label">Name (Spanish)</label>
+            <label for="nameSpanish" class="form-label">Name (Russian)</label>
             <input type="text" class="form-control" id="nameSpanish" name="nameSpanish" required>
         </div>
         <div class="mb-3">
@@ -283,6 +287,11 @@
             <label for="descriptionSpanish" class="form-label">Description (Russian)</label>
             <textarea class="form-control" id="descriptionRussian" name="descriptionRussian" rows="3" required></textarea>
         </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="date" name="date" required>
+        </div>
+
         <button type="submit" class="btn btn-primary">Add Item</button>
     </form>
 
@@ -308,7 +317,7 @@
                             <td><%= item.descriptions.russian %></td>
                             <td>
                                 <div class="d-flex justify-content-around">
-                                    <button type="button" class="btn btn-warning editItemBtn me-3" data-bs-toggle="modal" data-bs-target="#editItemModal" data-item-id="<%= item._id %>" data-item-name="<%= item.names.english %>" data-item-russian-name="<%= item.names.russian %>" data-item-description-english="<%= item.descriptions.english %>" data-item-description-russian="<%= item.descriptions.russian %>">Edit</button>
+                                    <button type="button" class="btn btn-warning editItemBtn me-3" data-bs-toggle="modal" data-bs-target="#editItemModal" data-item-id="<%= item._id %>" data-item-name="<%= item.names.english %>" data-item-russian-name="<%= item.names.russian %>" data-item-description-english="<%= item.descriptions.english %>" data-item-description-russian="<%= item.descriptions.russian %>" data-date="<%= item.date %>" >Edit</button>
                                     <form action="/deleteItem/<%= item._id %>?_method=DELETE" method="post">
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
@@ -385,12 +394,14 @@
                         let itemRussianName = button.getAttribute('data-item-russian-name');
                         let itemDescriptionEnglish = button.getAttribute('data-item-description-english');
                         let itemDescriptionRussian = button.getAttribute('data-item-description-russian');
+                        let date = button.getAttribute('data-date');
 
                         document.getElementById('editItemId').value = itemId;
                         document.getElementById('editItemName').value = itemName;
                         document.getElementById('editItemRussianName').value = itemRussianName;
                         document.getElementById('editItemDescriptionEnglish').value = itemDescriptionEnglish;
                         document.getElementById('editItemDescriptionRussian').value = itemDescriptionRussian;
+                        document.getElementById('editItemDate').value = date;
                     });
                 });
         });
