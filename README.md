@@ -73,8 +73,6 @@ Before running the application, ensure you have set up the necessary environment
 PORT=3000
 ```
 
-Replace `your_mongodb_uri` with the URI for your MongoDB database and `your_session_secret` with a random string used for session encryption.
-
 ### Admin Credentials for Website Login
 
 To access the admin features of the website, you can use the following credentials:
