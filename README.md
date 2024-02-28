@@ -1,10 +1,10 @@
 # CodeQuizHub
 
 CodeQuizHub is an interactive quiz platform designed for programmers and coding enthusiasts. It offers a wide range of quizzes covering various programming languages, technologies, and concepts. Users can test their knowledge, challenge themselves, and learn new topics in a fun and engaging way.
-+News API
-+Quiz API
-+Social Sharing(Twitter)
-+User Profile and History
+- News API
+- Quiz API
+- Social Sharing(Twitter)
+- User Profile and History
 
 ## Table of Contents
 - [Getting Started](#getting-started)
