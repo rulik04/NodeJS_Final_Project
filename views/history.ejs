@@ -39,6 +39,21 @@
         .card h3{
             margin-bottom: 10px;
         }
+
+        .share{
+            background-color: #9886bb;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .share:hover{
+            background-color: #7a6aa6;
+        }
+
     </style>
 </head>
 <body>
@@ -100,7 +115,7 @@
         <div id="main">
             <ul class="historyCont">
                 <% for (let i = 0; i < quizzes.length; i++) { %>
-                    <li class="card" data-history="<%= quizzes[i] %>">
+                    <li class="card" data-history="<%= quizzes[i] %>" data-userid="<%= user._id %>">
                         <div>
                             <h3>Category: <%= quizzes[i].category %></h3>
                             <p>Correct answers: <%= quizzes[i].totalCorrect  %></p>
@@ -115,6 +130,8 @@
                             let submitAt = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}` 
                             %>
                             <p>Submited: <%= submitAt%></p>
+
+                            <button class="share" onclick="shareToTwitter('<%= quizzes[i]._id %>', '<%= quizzes[i].category %>')">Share on Twitter</button>
                         </div>
                     </li>
                 <% } %>
@@ -159,5 +176,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
+
+    <script>
+        function shareToTwitter(quizid, category) {
+            const tweetUrl = `https://twitter.com/intent/tweet?text=Check out my quiz results for ${category} on CodeQuizHub: https://nodejs-finalproject-09fd98a4f3c0.herokuapp.com/quiz-history?quizId=${quizid}`;
+            window.open(tweetUrl, '_blank');
+        }
+
+    </script>
 </body>
 </html>

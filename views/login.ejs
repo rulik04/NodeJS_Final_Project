@@ -83,6 +83,9 @@
             position: relative;
         }  
         
+        .ques{
+            color: white;
+        }
     
     </style>
 </head>
@@ -110,7 +113,7 @@
             <div id="errorMessage" style="color: red; display: none;"></div>
 
             <button type="submit">Login</button>
-            <p>Don't have an account? <a href="/signup">Sign up</a></p>
+            <p class="ques">Don't have an account? <a href="/signup">Sign up</a></p>
         </form>
 
         <% if (message == "user created successfully") { %>

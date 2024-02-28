@@ -521,6 +521,19 @@ router.post('/editItem', upload.array('newItemImages', 3), async (req, res) => {
 });
 
 
+router.get('/quiz-history', async (req, res) => {
+    const quizId = req.query.quizId;
+    console.log('Quiz ID:', quizId);
+    try{
+        const result = await Quiz.findById(quizId);
+        console.log('Result:', result);
+        res.render('quizHistory', { result: result });
+    }
+    catch (error) {
+        console.error('Error:', error);
+        res.status(500).render('error', { errorMessage: 'Internal Server Error' });
+    }
+});
 
 module.exports = router;
 

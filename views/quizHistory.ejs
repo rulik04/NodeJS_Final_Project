@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz History</title>
+
+</head>
+<body>
+    <h1>Quiz History</h1>
+    <p>Quiz ID: <%= result._id %></p>
+    <p>Category: <%= result.category %></p>
+    <p>Total Correct Answers: <%= result.totalCorrect %></p>
+    <p>Total Wrong Answers: <%= result.totalWrong %></p>
+    <p>Total Time: <%= result.totalTime %> minutes</p>
+
+    <h2>Questions:</h2>
+    <ul>
+        <% Object.keys(result.questionsData).forEach(function(questionId) { %>
+            <% const question = JSON.parse(result.questionsData[questionId]); %>
+            <li>
+                <p><strong>Question:</strong> <%= question.question %></p>
+                <p><strong>Correct Answer:</strong> <%= question.correct_answers[question.correct_answer] %></p>
+                <p><strong>Your Answer:</strong> <%= question.answers[result.selectedAnswers[questionId]] %></p>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>
