@@ -106,7 +106,6 @@ router.get('/', async (req, res) => {
         };
     });
     
-    // console.log('Recent Results:', recentResults);
 
     if (req.session.user) {
             
